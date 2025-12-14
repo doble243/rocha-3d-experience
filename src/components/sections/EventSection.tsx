@@ -1,51 +1,41 @@
 import { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { ShoppingBag, MapPin, Store, MessageCircle, PartyPopper, Beer, Waves, Phone, ArrowRight } from 'lucide-react';
+import { Store, MessageCircle, Phone, ArrowRight, Truck, ShieldCheck, Palette, MapPin, Clock } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 gsap.registerPlugin(ScrollTrigger);
 
-const pastEvents = [
-  { name: 'Semana de Rocha', icon: Waves },
-  { name: 'Colonia Valdense', icon: PartyPopper },
-  { name: 'Feria de Rosario', icon: ShoppingBag },
-  { name: 'Bierfest Young', icon: Beer },
-];
-
 const highlights = [
-  {
-    icon: Waves,
-    badge: '¡TEMPORADA 2025!',
-    title: 'Atlántida',
-    subtitle: 'Hasta Febrero',
-    description: 'Encontranos en la costa atlántica toda la temporada. Fundas exclusivas de verano, diseños playeros y las mejores ofertas.',
-    features: ['Diseños exclusivos de verano', 'Ofertas especiales', 'Atención personalizada'],
-    color: 'primary',
-    gradient: 'from-primary/30 via-primary/10 to-transparent',
-    glow: 'shadow-[0_0_60px_hsla(159,100%,45%,0.4)]'
-  },
   {
     icon: Store,
     badge: 'LOCAL FÍSICO',
-    title: 'Agraciada',
+    title: 'Local en Agraciada',
     subtitle: 'Montevideo',
-    description: 'Visitá nuestro local en Avenida Agraciada. Probá las fundas, elegí tu diseño favorito y llevátelo al instante.',
-    features: ['Probá antes de comprar', 'Stock completo', 'Personalización en el momento'],
+    description: 'Visitá nuestro showroom en Avenida Agraciada. Mirá los materiales, tocá la calidad, y elegí el acabado perfecto para tu comercio.',
+    features: [
+      { icon: MapPin, text: 'Showroom con muestras reales' },
+      { icon: Palette, text: 'Asesoramiento de diseño' },
+      { icon: Clock, text: 'Entrega express disponible' }
+    ],
     color: 'secondary',
     gradient: 'from-secondary/30 via-secondary/10 to-transparent',
-    glow: 'shadow-[0_0_60px_hsla(51,100%,50%,0.4)]'
+    glow: 'shadow-[0_0_60px_hsla(51,100%,50%,0.3)]'
   },
   {
     icon: MessageCircle,
     badge: 'COMPRÁ FÁCIL',
     title: 'Asistente de Compra',
     subtitle: 'WhatsApp 24/7',
-    description: '¿No podés acercarte? ¡Te llevamos la funda a tu casa! Escribinos por WhatsApp y te asesoramos para elegir la mejor opción.',
-    features: ['Envíos a todo el país', 'Asesoramiento personalizado', 'Pagos seguros'],
+    description: '¿No podés acercarte? ¡Te asesoramos por WhatsApp! Envianos fotos de tu local y te proponemos la señalética ideal.',
+    features: [
+      { icon: Truck, text: 'Envíos a todo el país' },
+      { icon: ShieldCheck, text: 'Cotización sin compromiso' },
+      { icon: Palette, text: 'Diseño personalizado incluido' }
+    ],
     color: 'primary',
     gradient: 'from-primary/30 via-primary/10 to-transparent',
-    glow: 'shadow-[0_0_60px_hsla(159,100%,45%,0.4)]',
+    glow: 'shadow-[0_0_60px_hsla(159,100%,45%,0.3)]',
     cta: true
   }
 ];
@@ -56,20 +46,17 @@ export function EventSection() {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      // Animate past events badges with stagger
-      const badges = sectionRef.current?.querySelectorAll('.past-event-badge');
-      gsap.fromTo(badges,
-        { opacity: 0, scale: 0, rotation: -15 },
+      // Title animation
+      gsap.fromTo('.contact-title',
+        { opacity: 0, y: 50 },
         {
           opacity: 1,
-          scale: 1,
-          rotation: 0,
-          duration: 0.6,
-          stagger: 0.1,
-          ease: 'back.out(1.7)',
+          y: 0,
+          duration: 1,
+          ease: 'power3.out',
           scrollTrigger: {
-            trigger: badges?.[0],
-            start: 'top 85%',
+            trigger: '.contact-title',
+            start: 'top 80%',
           }
         }
       );
@@ -83,14 +70,14 @@ export function EventSection() {
           { 
             opacity: 0, 
             x: direction,
-            scale: 0.8,
-            rotationY: direction > 0 ? 15 : -15
+            scale: 0.85,
+            rotateY: direction > 0 ? 15 : -15
           },
           {
             opacity: 1,
             x: 0,
             scale: 1,
-            rotationY: 0,
+            rotateY: 0,
             duration: 1,
             ease: 'power3.out',
             scrollTrigger: {
@@ -161,9 +148,9 @@ export function EventSection() {
   return (
     <section
       ref={sectionRef}
-      id="events"
+      id="contact"
       className="relative py-24 md:py-32 overflow-hidden"
-      aria-labelledby="events-heading"
+      aria-labelledby="contact-heading"
     >
       {/* Animated background */}
       <div className="absolute inset-0 bg-gradient-to-b from-background via-card/30 to-background" />
@@ -174,49 +161,35 @@ export function EventSection() {
 
       <div className="container mx-auto px-4 relative z-10">
         {/* Header */}
-        <div className="text-center mb-12">
-          <span className="inline-block px-4 py-2 rounded-full bg-primary/20 border border-primary/30 text-primary text-sm font-display tracking-wider mb-4">
-            <MapPin className="inline w-4 h-4 mr-2" aria-hidden="true" />
-            EN TODO URUGUAY
+        <div className="text-center mb-16">
+          <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/20 border border-primary/30 text-primary text-sm font-display tracking-wider mb-4">
+            <MapPin className="w-4 h-4" />
+            CONTACTANOS
           </span>
           <h2
-            id="events-heading"
-            className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-display font-bold mb-4"
+            id="contact-heading"
+            className="contact-title text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-display font-bold mb-4"
           >
-            Donde <span className="text-gradient-secondary">Encontrarnos</span>
+            Cómo <span className="text-gradient-secondary">Encontrarnos</span>
           </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto font-body">
-            Recorremos las mejores ferias y festivales. ¡Siempre cerca tuyo!
+            Vení al local o escribinos. Te asesoramos para que tu comercio luzca profesional.
           </p>
         </div>
 
-        {/* Past Events Badges */}
-        <div className="flex flex-wrap justify-center gap-3 mb-20">
-          <span className="text-muted-foreground font-body text-sm mr-2 self-center">Ya estuvimos en:</span>
-          {pastEvents.map((event, index) => (
-            <div
-              key={index}
-              className="past-event-badge flex items-center gap-2 px-4 py-2 rounded-full bg-muted/30 border border-border/50 text-foreground/80 text-sm font-display hover:bg-muted/50 hover:scale-105 transition-all duration-300 cursor-default"
-            >
-              <event.icon className="w-4 h-4 text-secondary" aria-hidden="true" />
-              {event.name}
-            </div>
-          ))}
-        </div>
-
         {/* Highlight Cards */}
-        <div ref={cardsRef} className="space-y-16 md:space-y-24 max-w-5xl mx-auto">
+        <div ref={cardsRef} className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
           {highlights.map((item, index) => (
             <div
               key={index}
-              className={`highlight-card relative ${index % 2 === 1 ? 'md:ml-auto' : ''} max-w-2xl`}
+              className="highlight-card relative"
               style={{ perspective: '1000px' }}
             >
               {/* Background gradient */}
               <div className={`absolute inset-0 bg-gradient-to-r ${item.gradient} rounded-3xl blur-xl opacity-50`} />
               
               {/* Card content */}
-              <div className={`relative glass-card rounded-3xl p-8 md:p-10 border-2 ${
+              <div className={`relative glass-card rounded-3xl p-8 md:p-10 border-2 h-full ${
                 item.color === 'primary' ? 'border-primary/30 hover:border-primary/50' : 'border-secondary/30 hover:border-secondary/50'
               } transition-all duration-500 ${item.glow}`}>
                 
@@ -229,18 +202,18 @@ export function EventSection() {
                   {item.badge}
                 </div>
 
-                <div className="flex flex-col md:flex-row gap-8 items-start">
+                <div className="flex flex-col gap-6">
                   {/* Icon Section */}
-                  <div className="relative flex-shrink-0">
+                  <div className="relative flex-shrink-0 self-start">
                     <div className={`glow-ring absolute inset-0 rounded-full ${
                       item.color === 'primary' ? 'bg-primary/20' : 'bg-secondary/20'
                     }`} />
-                    <div className={`floating-icon relative w-24 h-24 md:w-28 md:h-28 rounded-full flex items-center justify-center ${
+                    <div className={`floating-icon relative w-20 h-20 rounded-full flex items-center justify-center ${
                       item.color === 'primary' 
                         ? 'bg-primary/20 border-2 border-primary text-primary' 
                         : 'bg-secondary/20 border-2 border-secondary text-secondary'
                     }`}>
-                      <item.icon className="w-12 h-12 md:w-14 md:h-14" aria-hidden="true" />
+                      <item.icon className="w-10 h-10" aria-hidden="true" />
                     </div>
                   </div>
 
@@ -252,12 +225,12 @@ export function EventSection() {
                       }`}>
                         {item.subtitle}
                       </p>
-                      <h3 className="text-3xl md:text-4xl font-display font-bold mt-1">
+                      <h3 className="text-2xl md:text-3xl font-display font-bold mt-1">
                         {item.title}
                       </h3>
                     </div>
                     
-                    <p className="text-muted-foreground font-body text-lg mb-6 leading-relaxed">
+                    <p className="text-muted-foreground font-body text-base mb-6 leading-relaxed">
                       {item.description}
                     </p>
 
@@ -265,10 +238,12 @@ export function EventSection() {
                     <ul className="space-y-3 mb-6">
                       {item.features.map((feature, fIndex) => (
                         <li key={fIndex} className="feature-item flex items-center gap-3">
-                          <div className={`w-2 h-2 rounded-full ${
-                            item.color === 'primary' ? 'bg-primary' : 'bg-secondary'
-                          }`} />
-                          <span className="text-foreground/80 font-body">{feature}</span>
+                          <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${
+                            item.color === 'primary' ? 'bg-primary/10 text-primary' : 'bg-secondary/10 text-secondary'
+                          }`}>
+                            <feature.icon className="w-4 h-4" />
+                          </div>
+                          <span className="text-foreground/80 font-body">{feature.text}</span>
                         </li>
                       ))}
                     </ul>
@@ -278,8 +253,8 @@ export function EventSection() {
                       <Button 
                         variant="hero" 
                         size="lg" 
-                        className="group mt-4"
-                        onClick={() => window.open('https://wa.me/598XXXXXXXX', '_blank')}
+                        className="group w-full sm:w-auto"
+                        onClick={() => window.open('https://wa.me/598XXXXXXXX?text=Hola!%20Me%20interesa%20cotizar%20señalética%20para%20mi%20comercio', '_blank')}
                       >
                         <Phone className="w-5 h-5 mr-2" />
                         Escribinos por WhatsApp
@@ -291,6 +266,21 @@ export function EventSection() {
               </div>
             </div>
           ))}
+        </div>
+
+        {/* Logo integration note */}
+        <div className="mt-16 text-center">
+          <div className="inline-flex items-center gap-4 px-6 py-4 rounded-2xl bg-muted/30 border border-border/50">
+            <img 
+              src="https://pub-f24c794dd2b44b4e8351b5f54de70b4a.r2.dev/logo_sinfondo_WC.png" 
+              alt="World Case UY Logo" 
+              className="w-12 h-12 object-contain"
+            />
+            <div className="text-left">
+              <p className="text-sm text-foreground font-display">Fabricado por World Case UY</p>
+              <p className="text-xs text-muted-foreground">Tu marca discreta en cada pieza</p>
+            </div>
+          </div>
         </div>
       </div>
     </section>
