@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { gsap } from 'gsap';
 import { Button } from '@/components/ui/button';
 import { Scene3D } from '@/components/3d/Scene3D';
-import { ChevronDown } from 'lucide-react';
+import { ChevronDown, Award } from 'lucide-react';
 
 export function HeroSection() {
   const sectionRef = useRef<HTMLDivElement>(null);
@@ -47,18 +47,23 @@ export function HeroSection() {
     return () => ctx.revert();
   }, []);
 
-  const scrollToSubscribe = () => {
-    document.getElementById('subscribe')?.scrollIntoView({ behavior: 'smooth' });
+  const scrollToProducts = () => {
+    document.getElementById('products')?.scrollIntoView({ behavior: 'smooth' });
   };
 
-  const titleText = "WORLD CASE UY";
+  const scrollToPacks = () => {
+    document.getElementById('packs')?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  const titleText = "SEÑALÉTICA";
+  const subtitleText = "PREMIUM";
   
   return (
     <section
       ref={sectionRef}
       className="relative min-h-screen flex items-center justify-center overflow-hidden"
       style={{ background: 'var(--gradient-hero)' }}
-      aria-label="World Case UY - Tu estilo, tu funda"
+      aria-label="Señalética Premium para Comercios"
     >
       {/* 3D Background */}
       <div className="absolute inset-0 z-0">
@@ -71,21 +76,22 @@ export function HeroSection() {
       {/* Content */}
       <div className="relative z-20 container mx-auto px-4 text-center">
         <div className="mb-6">
-          <span className="inline-block px-4 py-2 rounded-full bg-primary/20 border border-primary/30 text-primary text-sm font-display tracking-wider animate-fade-in">
-            🎉 PRÓXIMOS EVENTOS 2025
+          <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-secondary/20 border border-secondary/30 text-secondary text-sm font-display tracking-wider animate-fade-in">
+            <Award className="w-4 h-4" />
+            IMAGEN PROFESIONAL PARA TU NEGOCIO
           </span>
         </div>
 
         <h1
           ref={titleRef}
-          className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-display font-bold mb-6 perspective-1000"
+          className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-display font-bold mb-2 perspective-1000"
         >
           {titleText.split('').map((char, i) => (
             <span
               key={i}
               className="char inline-block preserve-3d"
               style={{ 
-                color: i >= 11 ? 'hsl(var(--secondary))' : 'hsl(var(--foreground))',
+                color: 'hsl(var(--foreground))',
                 textShadow: titleVisible ? '0 0 40px hsla(159, 100%, 45%, 0.5)' : 'none'
               }}
             >
@@ -93,31 +99,47 @@ export function HeroSection() {
             </span>
           ))}
         </h1>
+        
+        <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-display font-bold mb-6">
+          {subtitleText.split('').map((char, i) => (
+            <span
+              key={i}
+              className="char inline-block preserve-3d"
+              style={{ 
+                color: 'hsl(var(--secondary))',
+                textShadow: titleVisible ? '0 0 30px hsla(51, 100%, 50%, 0.5)' : 'none',
+                animationDelay: `${1.2 + i * 0.05}s`
+              }}
+            >
+              {char === ' ' ? '\u00A0' : char}
+            </span>
+          ))}
+        </h2>
 
         <p
           ref={subtitleRef}
-          className="text-lg sm:text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto mb-8 font-body opacity-0"
+          className="text-lg sm:text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto mb-8 font-body opacity-0"
         >
-          En tus eventos favoritos. Fundas personalizadas y accesorios únicos para tu celular.
+          Cartelería personalizada para comercios que quieren verse <span className="text-primary font-semibold">prolijos y profesionales</span>. Placas de horarios, señales interiores, QR premium y más.
         </p>
 
         <div ref={ctaRef} className="flex flex-col sm:flex-row gap-4 justify-center items-center opacity-0">
           <Button
             variant="hero"
             size="xl"
-            onClick={scrollToSubscribe}
+            onClick={scrollToPacks}
             className="animate-glow-pulse"
-            aria-label="Suscribirse para novedades"
+            aria-label="Ver nuestros packs comerciales"
           >
-            Suscríbete
+            Ver Packs Comerciales
           </Button>
           <Button
             variant="glass"
             size="lg"
-            onClick={() => document.getElementById('products')?.scrollIntoView({ behavior: 'smooth' })}
-            aria-label="Ver productos"
+            onClick={scrollToProducts}
+            aria-label="Ver catálogo de productos"
           >
-            Ver Productos
+            Ver Catálogo
           </Button>
         </div>
 

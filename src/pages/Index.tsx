@@ -3,6 +3,7 @@ import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { HeroSection } from '@/components/sections/HeroSection';
 import { ProductsSection } from '@/components/sections/ProductsSection';
+import { PacksSection } from '@/components/sections/PacksSection';
 import { EventSection } from '@/components/sections/EventSection';
 import { SubscribeSection } from '@/components/sections/SubscribeSection';
 import { Footer } from '@/components/sections/Footer';
@@ -31,6 +32,7 @@ const Index = () => {
     <main className="min-h-screen bg-background overflow-x-hidden">
       <HeroSection />
       <ProductsSection />
+      <PacksSection />
       <EventSection />
       <SubscribeSection />
       <Footer />
