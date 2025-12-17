@@ -9,46 +9,46 @@ gsap.registerPlugin(ScrollTrigger);
 const products = [
   {
     id: 1,
-    name: 'Placa de Horarios',
-    badge: 'PRODUCTO ANCLA',
-    description: 'El must-have de todo comercio. Mostrá tus horarios con estilo profesional.',
-    formats: ['20×30 cm', '30×40 cm', 'Vertical u horizontal'],
-    materials: ['Acrílico blanco/transparente', 'PVC espumado', 'Aluminio compuesto'],
-    extras: ['Logo de tu comercio', 'Tipografía limpia', 'Separadores metálicos'],
-    icon: Clock,
+    name: 'Acrílico',
+    badge: 'MÁS POPULAR',
+    description: 'Impresión directa sobre acrílico transparente o de color. Ideal para señalética premium.',
+    formats: ['Transparente', 'Blanco', 'Colores varios'],
+    materials: ['3mm - 5mm - 10mm de espesor', 'Corte láser disponible'],
+    extras: ['Señalética', 'Exhibidores', 'Placas decorativas'],
+    icon: LayoutGrid,
     color: 'primary'
   },
   {
     id: 2,
-    name: 'Cartelería Interior',
-    badge: 'PACK CERRADO',
-    description: 'Todo lo que tu local necesita en un solo pack. Venta en conjunto.',
-    formats: ['10×10 cm', '10×15 cm'],
-    materials: ['Acrílico premium', 'PVC resistente'],
-    extras: ['🚻 Baño', '💳 Caja', '📦 Depósito', '🧾 Reservado', '🚫 Solo personal'],
-    icon: LayoutGrid,
+    name: 'Madera y MDF',
+    badge: 'PREMIUM',
+    description: 'Impresión full color sobre superficies de madera. Textura natural con diseño moderno.',
+    formats: ['MDF', 'Terciado', 'Madera maciza'],
+    materials: ['Hasta 10cm de altura de objeto', 'Acabado mate o barnizado'],
+    extras: ['Cuadros decorativos', 'Menús de restaurante', 'Señales rústicas'],
+    icon: DoorOpen,
     color: 'secondary'
   },
   {
     id: 3,
-    name: 'QR Premium',
-    badge: 'MUY VENDIBLE',
-    description: 'QR que se nota premium. Barniz sectorizado y relieve que marca diferencia.',
-    formats: ['Placa rígida con QR + texto', 'Base autoportante o pared'],
-    materials: ['Impresión UV de alta definición', 'Barniz sectorizado'],
-    extras: ['Menú digital', 'WiFi', 'Instagram / Google Maps'],
+    name: 'Vidrio y Cerámica',
+    badge: 'ALTA DEFINICIÓN',
+    description: 'Impresión UV directa sobre vidrio y cerámica. Resistente y duradero.',
+    formats: ['Vidrio templado', 'Cerámica', 'Porcelanato'],
+    materials: ['Resistente al agua', 'No se descascara'],
+    extras: ['Vidrieras', 'Azulejos personalizados', 'Premios y trofeos'],
     icon: QrCode,
     color: 'primary'
   },
   {
     id: 4,
-    name: 'Señales Funcionales',
-    badge: 'ALTA ROTACIÓN',
-    description: 'Señales esenciales que siempre se reponen. Stock constante.',
-    formats: ['Varios tamaños disponibles'],
-    materials: ['Material duradero', 'Resistente a limpieza'],
-    extras: ['"Empuje / Tire"', '"No fumar"', '"Área restringida"'],
-    icon: DoorOpen,
+    name: 'Metal y Aluminio',
+    badge: 'INDUSTRIAL',
+    description: 'Impresión duradera sobre superficies metálicas. Ideal para uso exterior.',
+    formats: ['Aluminio compuesto', 'Acero inoxidable', 'Aluminio anodizado'],
+    materials: ['Resistente a intemperie', 'Durabilidad extrema'],
+    extras: ['Placas industriales', 'Señalética exterior', 'Merchandising'],
+    icon: Clock,
     color: 'secondary'
   }
 ];
@@ -123,16 +123,16 @@ export function ProductsSection() {
         <div className="text-center mb-16">
           <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/20 border border-primary/30 text-primary text-sm font-display tracking-wider mb-4">
             <Sparkles className="w-4 h-4" />
-            CATÁLOGO RENTABLE
+            MATERIALES
           </span>
           <h2
             id="products-heading"
             className="products-title text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-display font-bold mb-4"
           >
-            Nuestros <span className="text-gradient-primary">Productos</span>
+            Imprimimos en <span className="text-gradient-primary">Todo</span>
           </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto font-body">
-            Señalética que eleva la imagen de cualquier comercio. Calidad premium, precios competitivos.
+            Tecnología UV de alta definición sobre cualquier superficie rígida. Colores vibrantes y durabilidad extrema.
           </p>
         </div>
 
