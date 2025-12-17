@@ -22,9 +22,10 @@ export function Footer() {
         <div className="flex flex-col md:flex-row items-center justify-between gap-8">
           {/* Logo & Copyright */}
           <div className="text-center md:text-left">
-            <h3 className="text-2xl font-display font-bold mb-2">
-              WORLD <span className="text-primary">CASE</span> <span className="text-secondary">UY</span>
+            <h3 className="text-2xl font-display font-bold mb-1">
+              FABRICA <span className="text-primary">UV</span>
             </h3>
+            <p className="text-xs text-muted-foreground font-display mb-2">by World Case UY</p>
             <p className="text-muted-foreground text-sm font-body">
               © 2025 World Case Uruguay. Todos los derechos reservados.
             </p>
@@ -77,7 +78,7 @@ export function Footer() {
         {/* Additional info */}
         <div className="mt-12 pt-8 border-t border-border/20 text-center">
           <p className="text-sm text-muted-foreground font-body">
-            Hecho con 💚 en Uruguay | Fundas que protegen, diseños que inspiran
+            Hecho con 💚 en Uruguay | Impresión UV de alta definición
           </p>
         </div>
       </div>

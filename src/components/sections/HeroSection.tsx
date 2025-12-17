@@ -55,15 +55,15 @@ export function HeroSection() {
     document.getElementById('packs')?.scrollIntoView({ behavior: 'smooth' });
   };
 
-  const titleText = "SEÑALÉTICA";
-  const subtitleText = "PREMIUM";
+  const titleText = "FABRICA UV";
+  const subtitleText = "IMPRESIONES UV";
   
   return (
     <section
       ref={sectionRef}
       className="relative min-h-screen flex items-center justify-center overflow-hidden"
       style={{ background: 'var(--gradient-hero)' }}
-      aria-label="Señalética Premium para Comercios"
+      aria-label="FABRICA UV - Impresiones UV de Alta Definición"
     >
       {/* 3D Background */}
       <div className="absolute inset-0 z-0">
@@ -78,7 +78,7 @@ export function HeroSection() {
         <div className="mb-6">
           <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-secondary/20 border border-secondary/30 text-secondary text-sm font-display tracking-wider animate-fade-in">
             <Award className="w-4 h-4" />
-            IMAGEN PROFESIONAL PARA TU NEGOCIO
+            TECNOLOGÍA UV DE ALTA DEFINICIÓN
           </span>
         </div>
 
@@ -120,7 +120,7 @@ export function HeroSection() {
           ref={subtitleRef}
           className="text-lg sm:text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto mb-8 font-body opacity-0"
         >
-          Cartelería personalizada para comercios que quieren verse <span className="text-primary font-semibold">prolijos y profesionales</span>. Placas de horarios, señales interiores, QR premium y más.
+          Imprimimos en cualquier superficie rígida. <span className="text-primary font-semibold">Personalización sin límites</span>. Acrílico, madera, vidrio, metal y más.
         </p>
 
         <div ref={ctaRef} className="flex flex-col sm:flex-row gap-4 justify-center items-center opacity-0">

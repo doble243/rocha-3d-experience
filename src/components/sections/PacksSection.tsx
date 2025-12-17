@@ -143,7 +143,7 @@ export function PacksSection() {
   }, []);
 
   const handleContact = () => {
-    window.open('https://wa.me/598XXXXXXXX?text=Hola!%20Me%20interesa%20consultar%20por%20señalética%20premium', '_blank');
+    window.open('https://wa.me/598XXXXXXXX?text=Hola!%20Me%20interesa%20consultar%20por%20impresión%20UV', '_blank');
   };
 
   return (
@@ -164,7 +164,7 @@ export function PacksSection() {
         <div className="text-center mb-16">
           <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-secondary/20 border border-secondary/30 text-secondary text-sm font-display tracking-wider mb-4">
             <Star className="w-4 h-4" />
-            ACÁ ESTÁ LA GANANCIA
+            PACKS SEÑALÉTICA
           </span>
           <h2
             id="packs-heading"
@@ -254,7 +254,7 @@ export function PacksSection() {
         {/* Bottom note */}
         <div className="text-center mt-12">
           <p className="text-muted-foreground font-body text-sm">
-            Tu logo integrado discretamente: <span className="text-foreground/80">"Fabricado por World Case UY"</span>
+            Todos los packs incluyen <span className="text-foreground/80">impresión UV de alta definición</span> | by World Case UY
           </p>
         </div>
       </div>

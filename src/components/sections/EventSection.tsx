@@ -12,7 +12,7 @@ const highlights = [
     badge: 'LOCAL FÍSICO',
     title: 'Local en Agraciada',
     subtitle: 'Montevideo',
-    description: 'Visitá nuestro showroom en Avenida Agraciada. Mirá los materiales, tocá la calidad, y elegí el acabado perfecto para tu comercio.',
+    description: 'Visitá nuestro showroom en Avenida Agraciada. Mirá los materiales, tocá la calidad, y elegí el acabado perfecto para tu proyecto.',
     features: [
       { icon: MapPin, text: 'Showroom con muestras reales' },
       { icon: Palette, text: 'Asesoramiento de diseño' },
@@ -27,7 +27,7 @@ const highlights = [
     badge: 'COMPRÁ FÁCIL',
     title: 'Asistente de Compra',
     subtitle: 'WhatsApp 24/7',
-    description: '¿No podés acercarte? ¡Te asesoramos por WhatsApp! Envianos fotos de tu local y te proponemos la señalética ideal.',
+    description: '¿No podés acercarte? ¡Te asesoramos por WhatsApp! Envianos fotos de tu proyecto y te proponemos la mejor solución de impresión UV.',
     features: [
       { icon: Truck, text: 'Envíos a todo el país' },
       { icon: ShieldCheck, text: 'Cotización sin compromiso' },
@@ -254,7 +254,7 @@ export function EventSection() {
                         variant="hero" 
                         size="lg" 
                         className="group w-full sm:w-auto"
-                        onClick={() => window.open('https://wa.me/598XXXXXXXX?text=Hola!%20Me%20interesa%20cotizar%20señalética%20para%20mi%20comercio', '_blank')}
+                        onClick={() => window.open('https://wa.me/598XXXXXXXX?text=Hola!%20Me%20interesa%20cotizar%20impresión%20UV', '_blank')}
                       >
                         <Phone className="w-5 h-5 mr-2" />
                         Escribinos por WhatsApp
@@ -277,8 +277,8 @@ export function EventSection() {
               className="w-12 h-12 object-contain"
             />
             <div className="text-left">
-              <p className="text-sm text-foreground font-display">Fabricado por World Case UY</p>
-              <p className="text-xs text-muted-foreground">Tu marca discreta en cada pieza</p>
+              <p className="text-sm text-foreground font-display">FABRICA UV by World Case UY</p>
+              <p className="text-xs text-muted-foreground">Impresión UV de alta definición</p>
             </div>
           </div>
         </div>
