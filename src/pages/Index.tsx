@@ -4,6 +4,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { HeroSection } from '@/components/sections/HeroSection';
 import { ProductsSection } from '@/components/sections/ProductsSection';
 import { PacksSection } from '@/components/sections/PacksSection';
+import QuoteFormSection from '@/components/sections/QuoteFormSection';
 import { EventSection } from '@/components/sections/EventSection';
 import { SubscribeSection } from '@/components/sections/SubscribeSection';
 import { Footer } from '@/components/sections/Footer';
@@ -33,6 +34,7 @@ const Index = () => {
       <HeroSection />
       <ProductsSection />
       <PacksSection />
+      <QuoteFormSection />
       <EventSection />
       <SubscribeSection />
       <Footer />
