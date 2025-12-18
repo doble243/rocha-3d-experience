@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { ImmersiveScrollProvider } from '@/contexts/ImmersiveScrollContext';
 import { HeroSection } from '@/components/sections/HeroSection';
 import { ProductsSection } from '@/components/sections/ProductsSection';
 import { PacksSection } from '@/components/sections/PacksSection';
@@ -14,31 +15,53 @@ gsap.registerPlugin(ScrollTrigger);
 
 const Index = () => {
   useEffect(() => {
-    // Smooth scrolling setup
+    // ScrollTrigger configuration for immersive experience
     ScrollTrigger.config({
-      autoRefreshEvents: 'visibilitychange,DOMContentLoaded,load'
+      autoRefreshEvents: 'visibilitychange,DOMContentLoaded,load',
+      ignoreMobileResize: true
     });
 
-    // Refresh ScrollTrigger on resize
-    const handleResize = () => ScrollTrigger.refresh();
+    // Smooth defaults
+    ScrollTrigger.defaults({
+      toggleActions: 'play none none reverse'
+    });
+
+    // Refresh on resize with debounce
+    let resizeTimeout: NodeJS.Timeout;
+    const handleResize = () => {
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(() => {
+        ScrollTrigger.refresh();
+      }, 200);
+    };
+    
     window.addEventListener('resize', handleResize);
 
     return () => {
       window.removeEventListener('resize', handleResize);
+      clearTimeout(resizeTimeout);
       ScrollTrigger.killAll();
     };
   }, []);
 
   return (
-    <main className="min-h-screen bg-background overflow-x-hidden">
-      <HeroSection />
-      <ProductsSection />
-      <PacksSection />
-      <QuoteFormSection />
-      <EventSection />
-      <SubscribeSection />
-      <Footer />
-    </main>
+    <ImmersiveScrollProvider sectionCount={7}>
+      <main 
+        className="min-h-screen bg-background overflow-x-hidden"
+        style={{ 
+          perspective: '1500px',
+          perspectiveOrigin: '50% 50%'
+        }}
+      >
+        <HeroSection />
+        <ProductsSection />
+        <PacksSection />
+        <QuoteFormSection />
+        <EventSection />
+        <SubscribeSection />
+        <Footer />
+      </main>
+    </ImmersiveScrollProvider>
   );
 };
 

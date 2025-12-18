@@ -1,58 +1,159 @@
 import { useEffect, useRef, useState } from 'react';
 import { gsap } from 'gsap';
 import { Button } from '@/components/ui/button';
-import { Scene3D } from '@/components/3d/Scene3D';
-import { ChevronDown, Award } from 'lucide-react';
+import { ImmersiveScene } from '@/components/3d/ImmersiveScene';
+import { useSmoothScroll } from '@/hooks/use-smooth-scroll';
+import { ChevronDown } from 'lucide-react';
 
 export function HeroSection() {
   const sectionRef = useRef<HTMLDivElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
-  const subtitleRef = useRef<HTMLParagraphElement>(null);
+  const subtitleRef = useRef<HTMLHeadingElement>(null);
+  const descRef = useRef<HTMLParagraphElement>(null);
   const ctaRef = useRef<HTMLDivElement>(null);
-  const [titleVisible, setTitleVisible] = useState(false);
+  const badgeRef = useRef<HTMLDivElement>(null);
+  
+  const [isReady, setIsReady] = useState(false);
+  const { scrollProgress, scrollTo } = useSmoothScroll();
 
   useEffect(() => {
+    // Small delay to ensure 3D scene is loaded
+    const timer = setTimeout(() => setIsReady(true), 300);
+    return () => clearTimeout(timer);
+  }, []);
+
+  useEffect(() => {
+    if (!isReady) return;
+
     const ctx = gsap.context(() => {
-      // Title animation - letter by letter
+      const tl = gsap.timeline({
+        defaults: {
+          ease: 'expo.out'
+        }
+      });
+
+      // Badge emerges
+      tl.fromTo(badgeRef.current,
+        { 
+          opacity: 0, 
+          y: 30,
+          scale: 0.9,
+          filter: 'blur(8px)'
+        },
+        { 
+          opacity: 1, 
+          y: 0,
+          scale: 1,
+          filter: 'blur(0px)',
+          duration: 0.8
+        },
+        0.3
+      );
+
+      // Title letters emerge from depth
       const titleChars = titleRef.current?.querySelectorAll('.char');
       if (titleChars) {
-        gsap.fromTo(titleChars,
-          { opacity: 0, y: 50, rotateX: -90 },
+        tl.fromTo(titleChars,
+          { 
+            opacity: 0, 
+            y: 50, 
+            rotateX: -60,
+            filter: 'blur(6px)'
+          },
           {
             opacity: 1,
             y: 0,
             rotateX: 0,
-            duration: 0.8,
-            stagger: 0.05,
-            ease: 'back.out(1.7)',
-            delay: 0.5,
-            onComplete: () => setTitleVisible(true)
-          }
+            filter: 'blur(0px)',
+            duration: 0.9,
+            stagger: 0.04,
+            ease: 'expo.out'
+          },
+          0.5
         );
       }
 
-      // Subtitle fade in
-      gsap.fromTo(subtitleRef.current,
-        { opacity: 0, y: 30 },
-        { opacity: 1, y: 0, duration: 1, delay: 1.5, ease: 'power3.out' }
+      // Subtitle emerges
+      const subtitleChars = subtitleRef.current?.querySelectorAll('.char');
+      if (subtitleChars) {
+        tl.fromTo(subtitleChars,
+          { 
+            opacity: 0, 
+            y: 30, 
+            rotateX: -45,
+            filter: 'blur(4px)'
+          },
+          {
+            opacity: 1,
+            y: 0,
+            rotateX: 0,
+            filter: 'blur(0px)',
+            duration: 0.7,
+            stagger: 0.03,
+            ease: 'expo.out'
+          },
+          0.9
+        );
+      }
+
+      // Description fades in with depth
+      tl.fromTo(descRef.current,
+        { 
+          opacity: 0, 
+          y: 40,
+          filter: 'blur(4px)'
+        },
+        { 
+          opacity: 1, 
+          y: 0, 
+          filter: 'blur(0px)',
+          duration: 0.9
+        },
+        1.4
       );
 
-      // CTA button animation
-      gsap.fromTo(ctaRef.current,
-        { opacity: 0, scale: 0.8 },
-        { opacity: 1, scale: 1, duration: 0.8, delay: 2, ease: 'elastic.out(1, 0.5)' }
+      // CTA emerges
+      tl.fromTo(ctaRef.current,
+        { 
+          opacity: 0, 
+          y: 30,
+          scale: 0.95
+        },
+        { 
+          opacity: 1, 
+          y: 0, 
+          scale: 1,
+          duration: 0.8
+        },
+        1.6
       );
+
     }, sectionRef);
 
     return () => ctx.revert();
-  }, []);
+  }, [isReady]);
 
-  const scrollToProducts = () => {
-    document.getElementById('products')?.scrollIntoView({ behavior: 'smooth' });
+  // Parallax effect on scroll
+  useEffect(() => {
+    if (contentRef.current) {
+      const yOffset = scrollProgress * 150;
+      const opacity = Math.max(0, 1 - scrollProgress * 2);
+      const scale = 1 - scrollProgress * 0.1;
+      const blur = scrollProgress * 8;
+      
+      contentRef.current.style.transform = `translateY(${yOffset}px) scale(${scale})`;
+      contentRef.current.style.opacity = String(opacity);
+      contentRef.current.style.filter = `blur(${blur}px)`;
+    }
+  }, [scrollProgress]);
+
+  const handleScrollToContent = () => {
+    scrollTo('#products', 1200);
   };
 
-  const scrollToPacks = () => {
-    document.getElementById('packs')?.scrollIntoView({ behavior: 'smooth' });
+  const handleScrollToPacks = () => {
+    scrollTo('#packs', 1200);
   };
 
   const titleText = "FABRICA UV";
@@ -62,29 +163,52 @@ export function HeroSection() {
     <section
       ref={sectionRef}
       className="relative min-h-screen flex items-center justify-center overflow-hidden"
-      style={{ background: 'var(--gradient-hero)' }}
+      style={{ background: 'hsl(220, 25%, 4%)' }}
       aria-label="FABRICA UV - Impresiones UV de Alta Definición"
     >
-      {/* 3D Background */}
+      {/* 3D Hexagonal Tunnel Background */}
       <div className="absolute inset-0 z-0">
-        <Scene3D variant="hero" />
+        <ImmersiveScene scrollProgress={scrollProgress} />
       </div>
 
-      {/* Gradient overlay */}
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-background/30 to-background z-10" />
+      {/* Depth gradient overlay */}
+      <div 
+        className="absolute inset-0 z-10 pointer-events-none"
+        style={{
+          background: `
+            radial-gradient(ellipse 80% 60% at 50% 100%, transparent 0%, hsl(220, 25%, 4%) 100%),
+            linear-gradient(180deg, hsl(220, 25%, 4%, 0.3) 0%, transparent 30%, transparent 70%, hsl(220, 25%, 4%, 0.6) 100%)
+          `
+        }}
+      />
+
+      {/* Vignette */}
+      <div 
+        className="absolute inset-0 z-10 pointer-events-none"
+        style={{
+          background: 'radial-gradient(ellipse at center, transparent 40%, hsl(220, 25%, 4%, 0.7) 100%)'
+        }}
+      />
 
       {/* Content */}
-      <div className="relative z-20 container mx-auto px-4 text-center">
-        <div className="mb-6">
-          <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-secondary/20 border border-secondary/30 text-secondary text-sm font-display tracking-wider animate-fade-in">
-            <Award className="w-4 h-4" />
-            TECNOLOGÍA UV DE ALTA DEFINICIÓN
+      <div 
+        ref={contentRef}
+        className="relative z-20 container mx-auto px-4 text-center will-change-transform"
+        style={{ transformStyle: 'preserve-3d' }}
+      >
+        {/* Badge */}
+        <div ref={badgeRef} className="mb-8 opacity-0">
+          <span className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-primary/10 border border-primary/20 text-primary/90 text-xs font-display tracking-[0.2em] uppercase backdrop-blur-sm">
+            <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
+            Tecnología UV de Alta Definición
           </span>
         </div>
 
+        {/* Title */}
         <h1
           ref={titleRef}
-          className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-display font-bold mb-2 perspective-1000"
+          className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-display font-bold mb-4 perspective-immersive"
+          style={{ lineHeight: '0.9' }}
         >
           {titleText.split('').map((char, i) => (
             <span
@@ -92,7 +216,7 @@ export function HeroSection() {
               className="char inline-block preserve-3d"
               style={{ 
                 color: 'hsl(var(--foreground))',
-                textShadow: titleVisible ? '0 0 40px hsla(159, 100%, 45%, 0.5)' : 'none'
+                textShadow: '0 0 60px hsla(165, 80%, 45%, 0.3)'
               }}
             >
               {char === ' ' ? '\u00A0' : char}
@@ -100,15 +224,18 @@ export function HeroSection() {
           ))}
         </h1>
         
-        <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-display font-bold mb-6">
+        {/* Subtitle */}
+        <h2 
+          ref={subtitleRef}
+          className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-display font-semibold mb-8 perspective-immersive"
+        >
           {subtitleText.split('').map((char, i) => (
             <span
               key={i}
               className="char inline-block preserve-3d"
               style={{ 
                 color: 'hsl(var(--secondary))',
-                textShadow: titleVisible ? '0 0 30px hsla(51, 100%, 50%, 0.5)' : 'none',
-                animationDelay: `${1.2 + i * 0.05}s`
+                textShadow: '0 0 40px hsla(45, 85%, 55%, 0.4)'
               }}
             >
               {char === ' ' ? '\u00A0' : char}
@@ -116,19 +243,23 @@ export function HeroSection() {
           ))}
         </h2>
 
+        {/* Description */}
         <p
-          ref={subtitleRef}
-          className="text-lg sm:text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto mb-8 font-body opacity-0"
+          ref={descRef}
+          className="text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto mb-10 font-body opacity-0 leading-relaxed"
         >
-          Imprimimos en cualquier superficie rígida. <span className="text-primary font-semibold">Personalización sin límites</span>. Acrílico, madera, vidrio, metal y más.
+          Imprimimos en cualquier superficie rígida. 
+          <span className="text-primary/90 font-medium"> Personalización sin límites</span>
+          . Acrílico, madera, vidrio, metal y más.
         </p>
 
+        {/* CTAs */}
         <div ref={ctaRef} className="flex flex-col sm:flex-row gap-4 justify-center items-center opacity-0">
           <Button
             variant="hero"
             size="xl"
-            onClick={scrollToPacks}
-            className="animate-glow-pulse"
+            onClick={handleScrollToPacks}
+            className="btn-cinematic animate-glow-breathe"
             aria-label="Ver nuestros packs comerciales"
           >
             Ver Packs Comerciales
@@ -136,17 +267,31 @@ export function HeroSection() {
           <Button
             variant="glass"
             size="lg"
-            onClick={scrollToProducts}
-            aria-label="Ver catálogo de productos"
+            onClick={handleScrollToContent}
+            className="btn-cinematic"
+            aria-label="Ver catálogo de materiales"
           >
-            Ver Catálogo
+            Explorar Materiales
           </Button>
         </div>
+      </div>
 
-        {/* Scroll indicator */}
-        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce-subtle">
-          <ChevronDown className="w-8 h-8 text-primary" aria-hidden="true" />
-        </div>
+      {/* Scroll indicator */}
+      <div 
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20"
+        style={{
+          opacity: Math.max(0, 1 - scrollProgress * 5),
+          transform: `translateX(-50%) translateY(${scrollProgress * 50}px)`
+        }}
+      >
+        <button 
+          onClick={handleScrollToContent}
+          className="flex flex-col items-center gap-2 text-muted-foreground/60 hover:text-primary/80 transition-colors duration-medium"
+          aria-label="Scroll para explorar"
+        >
+          <span className="text-xs font-display tracking-widest uppercase">Explorar</span>
+          <ChevronDown className="w-5 h-5 animate-float-cinematic" />
+        </button>
       </div>
     </section>
   );

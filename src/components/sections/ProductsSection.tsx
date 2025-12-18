@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { Scene3D } from '@/components/3d/Scene3D';
 import { Clock, LayoutGrid, QrCode, DoorOpen, Sparkles, CheckCircle } from 'lucide-react';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -55,50 +54,86 @@ const products = [
 
 export function ProductsSection() {
   const sectionRef = useRef<HTMLDivElement>(null);
+  const headerRef = useRef<HTMLDivElement>(null);
   const cardsRef = useRef<HTMLDivElement[]>([]);
   const [activeCard, setActiveCard] = useState<number | null>(null);
 
   useEffect(() => {
-    const ctx = gsap.context(() => {
-      // Parallax scroll for cards
-      cardsRef.current.forEach((card, index) => {
-        gsap.fromTo(card,
-          {
-            y: 100,
-            opacity: 0,
-            rotateY: index % 2 === 0 ? -15 : 15,
-            scale: 0.9
-          },
-          {
-            y: 0,
-            opacity: 1,
-            rotateY: 0,
-            scale: 1,
-            duration: 1,
-            ease: 'power3.out',
-            scrollTrigger: {
-              trigger: card,
-              start: 'top 85%',
-              end: 'top 55%',
-              scrub: 1,
-            }
-          }
-        );
-      });
+    if (!sectionRef.current) return;
 
-      // Title animation
-      gsap.fromTo('.products-title',
-        { opacity: 0, y: 50 },
+    const ctx = gsap.context(() => {
+      // Header emerges from depth
+      gsap.fromTo(headerRef.current,
+        {
+          opacity: 0,
+          y: 60,
+          scale: 0.95,
+          filter: 'blur(4px)'
+        },
         {
           opacity: 1,
           y: 0,
+          scale: 1,
+          filter: 'blur(0px)',
           duration: 1,
+          ease: 'expo.out',
           scrollTrigger: {
-            trigger: '.products-title',
-            start: 'top 80%',
+            trigger: headerRef.current,
+            start: 'top 85%',
+            end: 'top 60%',
+            scrub: 0.5
           }
         }
       );
+
+      // Cards with spatial parallax
+      cardsRef.current.forEach((card, index) => {
+        if (!card) return;
+        
+        const isLeft = index % 2 === 0;
+        const xOffset = isLeft ? -60 : 60;
+        const delay = index * 0.08;
+        
+        // Entry animation
+        gsap.fromTo(card,
+          {
+            opacity: 0,
+            x: xOffset,
+            y: 80,
+            scale: 0.9,
+            rotateY: isLeft ? -8 : 8,
+            filter: 'blur(6px)'
+          },
+          {
+            opacity: 1,
+            x: 0,
+            y: 0,
+            scale: 1,
+            rotateY: 0,
+            filter: 'blur(0px)',
+            duration: 1.2,
+            ease: 'expo.out',
+            scrollTrigger: {
+              trigger: card,
+              start: 'top 90%',
+              end: 'top 50%',
+              scrub: 0.6
+            }
+          }
+        );
+
+        // Parallax on scroll (after visible)
+        gsap.to(card, {
+          y: -30,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: card,
+            start: 'top bottom',
+            end: 'bottom top',
+            scrub: 1.5
+          }
+        });
+      });
     }, sectionRef);
 
     return () => ctx.revert();
@@ -108,73 +143,95 @@ export function ProductsSection() {
     <section
       ref={sectionRef}
       id="products"
-      className="relative py-24 md:py-32 overflow-hidden"
+      className="relative py-32 md:py-40 overflow-hidden"
       aria-labelledby="products-heading"
+      style={{ 
+        background: 'linear-gradient(180deg, hsl(220, 25%, 4%) 0%, hsl(220, 22%, 6%) 50%, hsl(220, 25%, 4%) 100%)',
+        transformStyle: 'preserve-3d'
+      }}
     >
-      {/* Background 3D */}
-      <div className="absolute inset-0 opacity-30 z-0">
-        <Scene3D variant="products" />
+      {/* Ambient glow */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-1/4 left-1/4 w-[600px] h-[600px] rounded-full bg-primary/5 blur-[120px]" />
+        <div className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] rounded-full bg-secondary/5 blur-[100px]" />
       </div>
 
-      {/* Gradient overlays */}
-      <div className="absolute inset-0 bg-gradient-to-b from-background via-transparent to-background z-10" />
-
-      <div className="relative z-20 container mx-auto px-4">
-        <div className="text-center mb-16">
-          <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/20 border border-primary/30 text-primary text-sm font-display tracking-wider mb-4">
-            <Sparkles className="w-4 h-4" />
+      <div className="relative z-10 container mx-auto px-4">
+        {/* Header */}
+        <div ref={headerRef} className="text-center mb-20">
+          <span className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-primary/10 border border-primary/20 text-primary/90 text-xs font-display tracking-[0.2em] uppercase mb-6">
+            <Sparkles className="w-3.5 h-3.5" />
             MATERIALES
           </span>
           <h2
             id="products-heading"
-            className="products-title text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-display font-bold mb-4"
+            className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-display font-bold mb-6"
           >
             Imprimimos en <span className="text-gradient-primary">Todo</span>
           </h2>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto font-body">
-            Tecnología UV de alta definición sobre cualquier superficie rígida. Colores vibrantes y durabilidad extrema.
+          <p className="text-lg text-muted-foreground max-w-2xl mx-auto font-body leading-relaxed">
+            Tecnología UV de alta definición sobre cualquier superficie rígida. 
+            Colores vibrantes y durabilidad extrema.
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-8 perspective-1000 max-w-5xl mx-auto">
+        {/* Cards grid */}
+        <div 
+          className="grid md:grid-cols-2 gap-8 lg:gap-10 max-w-5xl mx-auto"
+          style={{ perspective: '1500px' }}
+        >
           {products.map((product, index) => (
             <div
               key={product.id}
               ref={el => { if (el) cardsRef.current[index] = el; }}
-              className={`glass-card p-8 preserve-3d cursor-pointer transition-all duration-500 relative ${
-                activeCard === index ? 'scale-[1.02] border-primary' : ''
+              className={`group relative p-8 rounded-2xl cursor-pointer transition-all duration-slow ease-out-expo preserve-3d ${
+                activeCard === index 
+                  ? 'scale-[1.02]' 
+                  : 'hover:scale-[1.01]'
               }`}
+              style={{
+                background: 'linear-gradient(135deg, hsla(220, 20%, 100%, 0.03) 0%, hsla(220, 20%, 100%, 0.01) 100%)',
+                backdropFilter: 'blur(20px)',
+                border: activeCard === index 
+                  ? '1px solid hsla(165, 80%, 45%, 0.3)'
+                  : '1px solid hsla(220, 15%, 20%, 0.5)',
+                boxShadow: activeCard === index 
+                  ? '0 0 60px hsla(165, 80%, 45%, 0.15), 0 25px 50px -12px hsla(0, 0%, 0%, 0.4)'
+                  : '0 25px 50px -12px hsla(0, 0%, 0%, 0.3)'
+              }}
               onMouseEnter={() => setActiveCard(index)}
               onMouseLeave={() => setActiveCard(null)}
               role="article"
               aria-label={product.name}
             >
               {/* Badge */}
-              <div className={`absolute -top-3 right-6 px-3 py-1 rounded-full text-xs font-display tracking-wider ${
+              <div className={`absolute -top-3 right-6 px-3 py-1.5 rounded-full text-[10px] font-display tracking-wider ${
                 product.color === 'primary' 
-                  ? 'bg-primary text-primary-foreground' 
-                  : 'bg-secondary text-secondary-foreground'
+                  ? 'bg-primary/90 text-primary-foreground' 
+                  : 'bg-secondary/90 text-secondary-foreground'
               }`}>
                 {product.badge}
               </div>
 
-              <div className={`w-16 h-16 rounded-2xl flex items-center justify-center mb-6 ${
+              {/* Icon */}
+              <div className={`w-14 h-14 rounded-xl flex items-center justify-center mb-6 transition-all duration-medium ease-out-expo ${
                 product.color === 'primary' 
-                  ? 'bg-primary/20 text-primary' 
-                  : 'bg-secondary/20 text-secondary'
+                  ? 'bg-primary/10 text-primary group-hover:bg-primary/20' 
+                  : 'bg-secondary/10 text-secondary group-hover:bg-secondary/20'
               }`}>
-                <product.icon className="w-8 h-8" aria-hidden="true" />
+                <product.icon className="w-7 h-7" aria-hidden="true" />
               </div>
 
-              <h3 className="text-2xl font-display font-bold mb-3">{product.name}</h3>
-              <p className="text-muted-foreground mb-6 font-body">{product.description}</p>
+              {/* Title & Description */}
+              <h3 className="text-2xl font-display font-bold mb-3 text-foreground">{product.name}</h3>
+              <p className="text-muted-foreground mb-6 font-body text-sm leading-relaxed">{product.description}</p>
 
               {/* Formats */}
-              <div className="mb-4">
-                <h4 className="text-sm font-display text-foreground/70 mb-2">Formatos:</h4>
+              <div className="mb-5">
+                <h4 className="text-xs font-display text-foreground/50 uppercase tracking-wider mb-2">Formatos</h4>
                 <div className="flex flex-wrap gap-2">
                   {product.formats.map((format, i) => (
-                    <span key={i} className="text-xs px-2 py-1 rounded-full bg-muted/50 text-foreground/80">
+                    <span key={i} className="text-xs px-2.5 py-1 rounded-full bg-muted/30 text-foreground/70 border border-border/30">
                       {format}
                     </span>
                   ))}
@@ -182,12 +239,12 @@ export function ProductsSection() {
               </div>
 
               {/* Materials */}
-              <div className="mb-4">
-                <h4 className="text-sm font-display text-foreground/70 mb-2">Materiales:</h4>
-                <ul className="space-y-1">
+              <div className="mb-5">
+                <h4 className="text-xs font-display text-foreground/50 uppercase tracking-wider mb-2">Características</h4>
+                <ul className="space-y-1.5">
                   {product.materials.map((material, i) => (
-                    <li key={i} className="flex items-center gap-2 text-sm text-foreground/80">
-                      <CheckCircle className={`w-3 h-3 ${product.color === 'primary' ? 'text-primary' : 'text-secondary'}`} />
+                    <li key={i} className="flex items-center gap-2 text-sm text-foreground/70">
+                      <CheckCircle className={`w-3.5 h-3.5 ${product.color === 'primary' ? 'text-primary/70' : 'text-secondary/70'}`} />
                       {material}
                     </li>
                   ))}
@@ -196,19 +253,19 @@ export function ProductsSection() {
 
               {/* Extras */}
               <div>
-                <h4 className="text-sm font-display text-foreground/70 mb-2">Incluye:</h4>
-                <ul className="space-y-2">
+                <h4 className="text-xs font-display text-foreground/50 uppercase tracking-wider mb-2">Aplicaciones</h4>
+                <ul className="space-y-1.5">
                   {product.extras.map((extra, i) => (
                     <li
                       key={i}
-                      className="flex items-center gap-3 text-sm font-body"
+                      className="flex items-center gap-2 text-sm font-body transition-all duration-fast ease-out-expo"
                       style={{
-                        opacity: activeCard === index ? 1 : 0.7,
-                        transform: activeCard === index ? 'translateX(8px)' : 'translateX(0)',
-                        transition: `all 0.3s ease ${i * 0.05}s`
+                        opacity: activeCard === index ? 1 : 0.6,
+                        transform: activeCard === index ? 'translateX(6px)' : 'translateX(0)',
+                        transitionDelay: `${i * 50}ms`
                       }}
                     >
-                      <span className={`w-2 h-2 rounded-full ${
+                      <span className={`w-1.5 h-1.5 rounded-full ${
                         product.color === 'primary' ? 'bg-primary' : 'bg-secondary'
                       }`} />
                       {extra}
