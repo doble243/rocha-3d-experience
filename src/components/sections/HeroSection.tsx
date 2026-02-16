@@ -18,7 +18,6 @@ export function HeroSection() {
   const { scrollProgress, scrollTo } = useSmoothScroll();
 
   useEffect(() => {
-    // Small delay to ensure 3D scene is loaded
     const timer = setTimeout(() => setIsReady(true), 300);
     return () => clearTimeout(timer);
   }, []);
@@ -27,114 +26,48 @@ export function HeroSection() {
     if (!isReady) return;
 
     const ctx = gsap.context(() => {
-      const tl = gsap.timeline({
-        defaults: {
-          ease: 'expo.out'
-        }
-      });
+      const tl = gsap.timeline({ defaults: { ease: 'expo.out' } });
 
-      // Badge emerges
       tl.fromTo(badgeRef.current,
-        { 
-          opacity: 0, 
-          y: 30,
-          scale: 0.9,
-          filter: 'blur(8px)'
-        },
-        { 
-          opacity: 1, 
-          y: 0,
-          scale: 1,
-          filter: 'blur(0px)',
-          duration: 0.8
-        },
+        { opacity: 0, y: 30, scale: 0.9, filter: 'blur(8px)' },
+        { opacity: 1, y: 0, scale: 1, filter: 'blur(0px)', duration: 0.8 },
         0.3
       );
 
-      // Title letters emerge from depth
       const titleChars = titleRef.current?.querySelectorAll('.char');
       if (titleChars) {
         tl.fromTo(titleChars,
-          { 
-            opacity: 0, 
-            y: 50, 
-            rotateX: -60,
-            filter: 'blur(6px)'
-          },
-          {
-            opacity: 1,
-            y: 0,
-            rotateX: 0,
-            filter: 'blur(0px)',
-            duration: 0.9,
-            stagger: 0.04,
-            ease: 'expo.out'
-          },
+          { opacity: 0, y: 50, rotateX: -60, filter: 'blur(6px)' },
+          { opacity: 1, y: 0, rotateX: 0, filter: 'blur(0px)', duration: 0.9, stagger: 0.04, ease: 'expo.out' },
           0.5
         );
       }
 
-      // Subtitle emerges
       const subtitleChars = subtitleRef.current?.querySelectorAll('.char');
       if (subtitleChars) {
         tl.fromTo(subtitleChars,
-          { 
-            opacity: 0, 
-            y: 30, 
-            rotateX: -45,
-            filter: 'blur(4px)'
-          },
-          {
-            opacity: 1,
-            y: 0,
-            rotateX: 0,
-            filter: 'blur(0px)',
-            duration: 0.7,
-            stagger: 0.03,
-            ease: 'expo.out'
-          },
+          { opacity: 0, y: 30, rotateX: -45, filter: 'blur(4px)' },
+          { opacity: 1, y: 0, rotateX: 0, filter: 'blur(0px)', duration: 0.7, stagger: 0.03, ease: 'expo.out' },
           0.9
         );
       }
 
-      // Description fades in with depth
       tl.fromTo(descRef.current,
-        { 
-          opacity: 0, 
-          y: 40,
-          filter: 'blur(4px)'
-        },
-        { 
-          opacity: 1, 
-          y: 0, 
-          filter: 'blur(0px)',
-          duration: 0.9
-        },
+        { opacity: 0, y: 40, filter: 'blur(4px)' },
+        { opacity: 1, y: 0, filter: 'blur(0px)', duration: 0.9 },
         1.4
       );
 
-      // CTA emerges
       tl.fromTo(ctaRef.current,
-        { 
-          opacity: 0, 
-          y: 30,
-          scale: 0.95
-        },
-        { 
-          opacity: 1, 
-          y: 0, 
-          scale: 1,
-          duration: 0.8
-        },
+        { opacity: 0, y: 30, scale: 0.95 },
+        { opacity: 1, y: 0, scale: 1, duration: 0.8 },
         1.6
       );
-
     }, sectionRef);
 
     return () => ctx.revert();
   }, [isReady]);
 
-  // Parallax effect on scroll
   useEffect(() => {
     if (contentRef.current) {
       const yOffset = scrollProgress * 150;
@@ -148,30 +81,28 @@ export function HeroSection() {
     }
   }, [scrollProgress]);
 
-  const handleScrollToContent = () => {
+  const handleScrollToServices = () => {
     scrollTo('#products', 1200);
   };
 
-  const handleScrollToPacks = () => {
+  const handleScrollToPlans = () => {
     scrollTo('#packs', 1200);
   };
 
-  const titleText = "FABRICA UV";
-  const subtitleText = "IMPRESIONES UV";
+  const titleText = "SIMPLEMENTE";
+  const subtitleText = "WEB CON IA";
   
   return (
     <section
       ref={sectionRef}
       className="relative min-h-screen flex items-center justify-center overflow-hidden"
       style={{ background: 'hsl(220, 25%, 4%)' }}
-      aria-label="FABRICA UV - Impresiones UV de Alta Definición"
+      aria-label="SIMPLEMENTE - Desarrollo Web con Inteligencia Artificial"
     >
-      {/* 3D Hexagonal Tunnel Background */}
       <div className="absolute inset-0 z-0">
         <ImmersiveScene scrollProgress={scrollProgress} />
       </div>
 
-      {/* Depth gradient overlay */}
       <div 
         className="absolute inset-0 z-10 pointer-events-none"
         style={{
@@ -182,7 +113,6 @@ export function HeroSection() {
         }}
       />
 
-      {/* Vignette */}
       <div 
         className="absolute inset-0 z-10 pointer-events-none"
         style={{
@@ -190,21 +120,18 @@ export function HeroSection() {
         }}
       />
 
-      {/* Content */}
       <div 
         ref={contentRef}
         className="relative z-20 container mx-auto px-4 text-center will-change-transform"
         style={{ transformStyle: 'preserve-3d' }}
       >
-        {/* Badge */}
         <div ref={badgeRef} className="mb-8 opacity-0">
           <span className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-primary/10 border border-primary/20 text-primary/90 text-xs font-display tracking-[0.2em] uppercase backdrop-blur-sm">
             <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
-            Tecnología UV de Alta Definición
+            Desarrollo Web Potenciado por IA
           </span>
         </div>
 
-        {/* Title */}
         <h1
           ref={titleRef}
           className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-display font-bold mb-4 perspective-immersive"
@@ -224,7 +151,6 @@ export function HeroSection() {
           ))}
         </h1>
         
-        {/* Subtitle */}
         <h2 
           ref={subtitleRef}
           className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-display font-semibold mb-8 perspective-immersive"
@@ -243,40 +169,37 @@ export function HeroSection() {
           ))}
         </h2>
 
-        {/* Description */}
         <p
           ref={descRef}
           className="text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto mb-10 font-body opacity-0 leading-relaxed"
         >
-          Imprimimos en cualquier superficie rígida. 
-          <span className="text-primary/90 font-medium"> Personalización sin límites</span>
-          . Acrílico, madera, vidrio, metal y más.
+          Creamos experiencias web extraordinarias.
+          <span className="text-primary/90 font-medium"> Diseño, desarrollo y lanzamiento</span>
+          . Potenciado por inteligencia artificial.
         </p>
 
-        {/* CTAs */}
         <div ref={ctaRef} className="flex flex-col sm:flex-row gap-4 justify-center items-center opacity-0">
           <Button
             variant="hero"
             size="xl"
-            onClick={handleScrollToPacks}
+            onClick={handleScrollToPlans}
             className="btn-cinematic animate-glow-breathe"
-            aria-label="Ver nuestros packs comerciales"
+            aria-label="Ver nuestros planes"
           >
-            Ver Packs Comerciales
+            Ver Planes
           </Button>
           <Button
             variant="glass"
             size="lg"
-            onClick={handleScrollToContent}
+            onClick={handleScrollToServices}
             className="btn-cinematic"
-            aria-label="Ver catálogo de materiales"
+            aria-label="Explorar servicios"
           >
-            Explorar Materiales
+            Explorar Servicios
           </Button>
         </div>
       </div>
 
-      {/* Scroll indicator */}
       <div 
         className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20"
         style={{
@@ -285,7 +208,7 @@ export function HeroSection() {
         }}
       >
         <button 
-          onClick={handleScrollToContent}
+          onClick={handleScrollToServices}
           className="flex flex-col items-center gap-2 text-muted-foreground/60 hover:text-primary/80 transition-colors duration-medium"
           aria-label="Scroll para explorar"
         >

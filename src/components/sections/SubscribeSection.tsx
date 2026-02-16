@@ -51,25 +51,12 @@ export function SubscribeSection() {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      // Cube reveal animation
       gsap.fromTo(cubeRef.current,
-        { 
-          opacity: 0, 
-          scale: 0.5,
-          rotateY: -45,
-          rotateX: 30
-        },
+        { opacity: 0, scale: 0.5, rotateY: -45, rotateX: 30 },
         {
-          opacity: 1,
-          scale: 1,
-          rotateY: 0,
-          rotateX: 0,
-          duration: 1.2,
-          ease: 'back.out(1.7)',
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: 'top 70%',
-          }
+          opacity: 1, scale: 1, rotateY: 0, rotateX: 0,
+          duration: 1.2, ease: 'back.out(1.7)',
+          scrollTrigger: { trigger: sectionRef.current, start: 'top 70%' }
         }
       );
     }, sectionRef);
@@ -81,35 +68,19 @@ export function SubscribeSection() {
     e.preventDefault();
     
     if (!email || !email.includes('@')) {
-      toast({
-        title: "Email inválido",
-        description: "Por favor ingresa un email válido",
-        variant: "destructive"
-      });
+      toast({ title: "Email inválido", description: "Por favor ingresa un email válido", variant: "destructive" });
       return;
     }
 
     setIsSubmitted(true);
     setShowConfetti(true);
-    
-    toast({
-      title: "¡Gracias por suscribirte!",
-      description: "Te notificaremos sobre próximos eventos",
-    });
-
+    toast({ title: "¡Gracias por suscribirte!", description: "Te mantendremos al tanto de novedades y tips" });
     setTimeout(() => setShowConfetti(false), 4000);
   };
 
   return (
-    <section
-      ref={sectionRef}
-      id="subscribe"
-      className="relative py-24 md:py-32 overflow-hidden"
-      aria-labelledby="subscribe-heading"
-    >
+    <section ref={sectionRef} id="subscribe" className="relative py-24 md:py-32 overflow-hidden" aria-labelledby="subscribe-heading">
       {showConfetti && <Confetti />}
-
-      {/* Background gradient */}
       <div className="absolute inset-0 bg-gradient-to-b from-background via-primary/5 to-background" />
 
       <div className="relative z-10 container mx-auto px-4">
@@ -121,9 +92,7 @@ export function SubscribeSection() {
             }`}
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
-            style={{
-              transform: isHovered ? 'translateZ(20px)' : 'translateZ(0)',
-            }}
+            style={{ transform: isHovered ? 'translateZ(20px)' : 'translateZ(0)' }}
           >
             <div className="text-center mb-8">
               <div className="w-16 h-16 rounded-full bg-primary/20 flex items-center justify-center mx-auto mb-6">
@@ -134,67 +103,43 @@ export function SubscribeSection() {
                 )}
               </div>
 
-              <h2
-                id="subscribe-heading"
-                className="text-3xl sm:text-4xl md:text-5xl font-display font-bold mb-4"
-              >
+              <h2 id="subscribe-heading" className="text-3xl sm:text-4xl md:text-5xl font-display font-bold mb-4">
                 {isSubmitted ? (
                   <>¡Estás <span className="text-gradient-primary">Dentro</span>!</>
                 ) : (
-                  <>Únete a <span className="text-gradient-primary">World Case</span></>
+                  <>Únete a <span className="text-gradient-primary">SIMPLEMENTE</span></>
                 )}
               </h2>
 
               <p className="text-lg text-muted-foreground font-body">
                 {isSubmitted
-                  ? 'Te avisaremos sobre nuestros próximos eventos y lanzamientos exclusivos.'
-                  : 'Sé el primero en enterarte de eventos, descuentos y nuevos diseños.'
+                  ? 'Te enviaremos tips, novedades y recursos sobre desarrollo web con IA.'
+                  : 'Recibí tips de desarrollo web, novedades sobre IA y recursos exclusivos.'
                 }
               </p>
             </div>
 
             {!isSubmitted ? (
-              <form
-                ref={formRef}
-                onSubmit={handleSubmit}
-                className="flex flex-col sm:flex-row gap-4"
-              >
+              <form ref={formRef} onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-4">
                 <div className="flex-1 relative">
-                  <Input
-                    type="email"
-                    placeholder="tu@email.com"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
-                    aria-label="Dirección de email"
-                    className="pr-12"
-                  />
+                  <Input type="email" placeholder="tu@email.com" value={email} onChange={(e) => setEmail(e.target.value)} required aria-label="Dirección de email" className="pr-12" />
                   <Mail className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" aria-hidden="true" />
                 </div>
-                <Button
-                  type="submit"
-                  variant="hero"
-                  size="lg"
-                  className="group"
-                >
+                <Button type="submit" variant="hero" size="lg" className="group">
                   <Sparkles className="w-5 h-5 mr-2 group-hover:animate-spin" aria-hidden="true" />
                   Suscribirme
                 </Button>
               </form>
             ) : (
               <div className="flex justify-center">
-                <Button
-                  variant="golden"
-                  size="lg"
-                  onClick={() => window.open('https://instagram.com', '_blank')}
-                >
+                <Button variant="golden" size="lg" onClick={() => window.open('https://instagram.com/simplemente.dev', '_blank')}>
                   Síguenos en Instagram
                 </Button>
               </div>
             )}
 
             <p className="text-center text-sm text-muted-foreground mt-6 font-body">
-              No spam. Solo novedades importantes. 🇺🇾
+              No spam. Solo contenido de valor. 🚀
             </p>
           </div>
         </div>
